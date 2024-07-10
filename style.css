@@ -16,19 +16,33 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
+  user-select: none;
 }
 
-.box {
-  border: 2px solid white;
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+.cell .value:not(.empty) {
+  color: red;
+  font-size: 14px;
+}
+.grid {
+  --cell-size: 100px;
+  display: flex;
+  flex-wrap: wrap;
+  width: calc(var(--grid-size) * var(--cell-size));
 }
 
 .cell {
-  width: 70px;
-  height: 70px;
+  width: var(--cell-size);
+  height: var(--cell-size);
   border: 2px solid white;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-size: 18px;
+  font-size: 12px;
   font-weight: bold;
 }
