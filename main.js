@@ -1,5 +1,5 @@
 import './style.css';
-
+console.clear()
 const gridSize = 4;
 
 const getRandomCell = () => {
@@ -18,10 +18,23 @@ const getRandomCell = () => {
 //   grid.appendChild(row);
 // }
 
-const grid = [];
 
 const generateGrid = (gridSize) => {
+  const grid = [];
   for (let row = 0; row < gridSize; row++) {
-    for (let col = 0; col < gridSize; col++) {}
+    for (let col = 0; col < gridSize; col++) {
+      grid.push({row, col, index:col+row*gridSize, value: 0})
+    }
   }
+  return grid
 };
+
+const grid = generateGrid(gridSize);
+
+const createGrid = (grid) => {
+  console.log(grid)
+}
+
+// createGrid(grid)
+
+console.log(grid)
