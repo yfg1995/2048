@@ -24,25 +24,50 @@
 *::after {
   box-sizing: border-box;
 }
-.cell .value:not(.empty) {
-  color: red;
-  font-size: 14px;
-}
+
 .grid {
   --cell-size: 100px;
-  display: flex;
-  flex-wrap: wrap;
-  width: calc(var(--grid-size) * var(--cell-size));
+  --grid-size: 4;
+  --gap: 4px;
+  --cell-bg-clr: #ccc0b3;
+  --bdrs: 10px;
+
+  position: relative;
+  width: calc(var(--grid-size) * var(--cell-size) + var(--gap) * 2);
+  height: calc(var(--grid-size) * var(--cell-size) + var(--gap) * 2);
+  border: 2px solid white;
+  background: #bbada0;
+}
+
+.grid::after {
+  position: absolute;
+  content: "";
+  top: var(--gap);
+  left: var(--gap);
+  box-shadow: var(--bg-pattern);
+  border-radius: var(--bdrs);
+  width: calc(var(--cell-size) - var(--gap) * 2);
+  height: calc(var(--cell-size) - var(--gap) * 2);
+  background: var(--cell-bg-clr);
 }
 
 .cell {
-  width: var(--cell-size);
-  height: var(--cell-size);
-  border: 2px solid white;
+  position: absolute;
+  top: var(--gap);
+  left: var(--gap);
+  width: calc(var(--cell-size) - var(--gap) * 2);
+  height: calc(var(--cell-size) - var(--gap) * 2);
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-size: 12px;
   font-weight: bold;
+  border-radius: var(--bdrs);
+  font-size: calc(var(--cell-size) * 0.25);
+  background: #242424;
+  transform: translate(
+    calc(var(--col) * var(--cell-size)),
+    calc(var(--row) * var(--cell-size))
+  );
+  box-shadow: 0 0 0 2px white;
+  z-index: 10;
 }
