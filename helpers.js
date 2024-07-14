@@ -80,38 +80,14 @@ export const mirror = (cells) => {
   return [...cells].reverse();
 };
 
-class MenuToggle {
-  constructor() {
-    this.menu = document.querySelector(".menu");
-    this.toogle = this.menu.querySelector(".toggle");
-    this.handleMenuOpen();
-  }
+export const sameGrid = (oldGrid, newGrid) => {
+  for (let i = 0; i < oldGrid.length; i++) {
+    const values1 = Object.values(oldGrid[i]);
+    const values2 = Object.values(newGrid[i]);
 
-  handleMenuOpen() {
-    this.handle();
+    if (!values1.every((value, index) => value === values2[index])) {
+      return false;
+    }
   }
-
-  handle() {
-    this.menuItems = [];
-    this.menuItems.push(new MenuItem());
-  }
-}
-
-class MenuItem {
-  constructor(parent) {
-    this.parent = parent;
-    this.menu = document.querySelector(".menu");
-    this.toogle = this.menu.querySelector(".toggle");
-    this.handleMenuOpen();
-  }
-
-  handleMenuOpen() {
-    this.menuItem = null;
-  }
-
-  handle() {
-    console.log(this.menuItem);
-  }
-}
-
-new MenuToggle();
+  return true;
+};

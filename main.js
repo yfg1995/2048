@@ -1,3 +1,4 @@
+import "./style.css";
 import {
   createGrid,
   createHTMLElement,
@@ -7,10 +8,10 @@ import {
   mirror,
   removeZeros,
   restoreZeros,
+  sameGrid,
   sumCells,
   twoOrFour,
 } from "./helpers";
-import "./style.css";
 
 class Grid {
   constructor({ wrapSelector, gridSize }) {
@@ -21,6 +22,7 @@ class Grid {
 
   moveCells(direction, colsOrRows) {
     const newColsOrRows = [...colsOrRows];
+
     switch (direction) {
       case "up":
         // COLS
@@ -30,13 +32,12 @@ class Grid {
             this.gridSize
           );
 
-          col.forEach((cell, i) => {
-            sumValues[i] = { ...cell, value: sumValues[i].value };
-          });
-          console.log({
-            moveCellsUP: sumValues,
+          sumValues.forEach((sumValue, i) => {
+            col[i] = { ...col[i], value: sumValue.value };
           });
         });
+        break;
+
       case "down":
         // COLS
         newColsOrRows.forEach((col) => {
@@ -44,13 +45,12 @@ class Grid {
             restoreZeros(sumCells(removeZeros(mirror(col))), this.gridSize)
           );
 
-          col.forEach((cell, i) => {
-            sumValues[i] = { ...cell, value: sumValues[i].value };
-          });
-          console.log({
-            moveCellsDOWN: sumValues,
+          sumValues.forEach((sumValue, i) => {
+            col[i] = { ...col[i], value: sumValue.value };
           });
         });
+        break;
+
       case "left":
         // ROWS
         newColsOrRows.forEach((row) => {
@@ -59,13 +59,12 @@ class Grid {
             this.gridSize
           );
 
-          row.forEach((cell, i) => {
-            sumValues[i] = { ...cell, value: sumValues[i].value };
-          });
-          console.log({
-            moveCellsLEFT: sumValues,
+          sumValues.forEach((sumValue, i) => {
+            row[i] = { ...row[i], value: sumValue.value };
           });
         });
+        break;
+
       case "right":
         // ROWS
         newColsOrRows.forEach((row) => {
@@ -73,41 +72,81 @@ class Grid {
             restoreZeros(sumCells(removeZeros(mirror(row))), this.gridSize)
           );
 
-          row.forEach((cell, i) => {
-            sumValues[i] = { ...cell, value: sumValues[i].value };
-          });
-          console.log({
-            moveCellsRIGHT: sumValues,
+          sumValues.forEach((sumValue, i) => {
+            row[i] = { ...row[i], value: sumValue.value };
           });
         });
+        break;
+
       default:
         break;
     }
 
-    // return [...this.grid, newColsOrRows.flat()];
+    return newColsOrRows.flat();
+  }
+
+  renderNewGrid() {
+    this.gridWrap.innerHTML = "";
+    this.pickRandomCell(this.grid, this.gridWrap);
+
+    this.grid.forEach((cell) => {
+      if (cell.value !== 0) {
+        this.createCellHTML(cell);
+      }
+    });
   }
 
   listeners() {
     document.body.addEventListener("keydown", (e) => {
+      if (
+        e.key !== "ArrowUp" &&
+        e.key !== "ArrowDown" &&
+        e.key !== "ArrowLeft" &&
+        e.key !== "ArrowRight"
+      ) {
+        return;
+      }
+
       const { rows, cols } = groupCells(this.grid, this.gridSize);
 
       switch (e.key) {
         case "ArrowUp":
-          this.grid = this.moveCells("up", cols);
+          this.grid = this.canMove(this.grid, this.moveCells("up", cols));
+          break;
         case "ArrowDown":
-          this.grid = this.moveCells("down", cols);
+          this.grid = this.canMove(this.grid, this.moveCells("down", cols));
+          break;
         case "ArrowLeft":
-          this.grid = this.moveCells("left", rows);
+          this.grid = this.canMove(this.grid, this.moveCells("left", rows));
+          break;
         case "ArrowRight":
-          this.grid = this.moveCells("right", rows);
+          this.grid = this.canMove(this.grid, this.moveCells("right", rows));
+          break;
         default:
           break;
       }
-
-      // this.pickRandomCell()
-
-      console.log({ FINISHED: this.grid });
     });
+  }
+
+  canMove(oldGrid, newGrid) {
+    if (sameGrid(oldGrid, newGrid)) {
+      return this.grid;
+    } else {
+      this.grid = newGrid;
+      this.renderNewGrid();
+      return this.grid;
+    }
+  }
+
+  createCellHTML(cell) {
+    const { row, col, value } = cell;
+    this.gridWrap.appendChild(
+      createHTMLElement("div", {
+        className: "cell",
+        style: `--row: ${row}; --col: ${col}`,
+        textContent: value,
+      })
+    );
   }
 
   pickRandomCell() {
@@ -117,19 +156,13 @@ class Grid {
       return newGrid;
     }
     const randomCell = newGrid.filter(
-      (c) => c.index === Math.floor(Math.random() * newGrid.length)
+      (cell) => cell.index === Math.floor(Math.random() * newGrid.length)
     )[0];
 
     if (randomCell?.value === 0) {
       randomCell.value = twoOrFour();
 
-      this.gridWrap.appendChild(
-        createHTMLElement("div", {
-          className: "cell",
-          style: `--row: ${randomCell.row}; --col: ${randomCell.col}`,
-          textContent: randomCell.value,
-        })
-      );
+      this.createCellHTML(randomCell);
 
       return randomCell;
     } else {
@@ -154,5 +187,5 @@ class Grid {
   }
 }
 
-const classGrid = new Grid({ wrapSelector: ".grid", gridSize: 4 });
+const classGrid = new Grid({ wrapSelector: ".grid", gridSize: 5 });
 window.grid = classGrid;

@@ -64,10 +64,10 @@
   border-radius: var(--bdrs);
   font-size: calc(var(--cell-size) * 0.25);
   background: #242424;
+  box-shadow: 0 0 0 2px white;
+  z-index: 10;
   transform: translate(
     calc(var(--col) * var(--cell-size)),
     calc(var(--row) * var(--cell-size))
   );
-  box-shadow: 0 0 0 2px white;
-  z-index: 10;
 }
