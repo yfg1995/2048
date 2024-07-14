@@ -63,8 +63,7 @@
   font-weight: bold;
   border-radius: var(--bdrs);
   font-size: calc(var(--cell-size) * 0.25);
-  background: #242424;
-  box-shadow: 0 0 0 2px white;
+  background: var(--bg-clr);
   z-index: 10;
   transform: translate(
     calc(var(--col) * var(--cell-size)),
