@@ -4,9 +4,11 @@ export const twoOrFour = () => {
 
 export const createHTMLElement = (tag, props) => {
   const element = document.createElement(tag);
+
   Object.keys(props).forEach((prop) => {
     element[prop] = props[prop];
   });
+
   return element;
 };
 
@@ -50,8 +52,6 @@ export const createGrid = (grid, gridSize, gridWrap) => {
   return grid;
 };
 
-export const gridIsFilled = (grid) => grid.every((cell) => cell.value !== 0);
-
 export const removeZeros = (cells) => {
   return [...cells].filter((cell) => cell.value !== 0);
 };
@@ -82,12 +82,14 @@ export const mirror = (cells) => {
 
 export const sameGrid = (oldGrid, newGrid) => {
   for (let i = 0; i < oldGrid.length; i++) {
-    const values1 = Object.values(oldGrid[i]);
-    const values2 = Object.values(newGrid[i]);
+    const oldGridVal = Object.values(oldGrid[i]);
+    const newGridVal = Object.values(newGrid[i]);
 
-    if (!values1.every((value, index) => value === values2[index])) {
+    if (oldGridVal.some((value, idx) => value !== newGridVal[idx])) {
       return false;
     }
   }
   return true;
 };
+
+export const gridIsFilled = (grid) => grid.every((cell) => cell.value !== 0);

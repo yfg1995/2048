@@ -96,17 +96,6 @@ class Grid {
     return newColsOrRows.flat();
   }
 
-  renderNewGrid() {
-    this.gridWrap.innerHTML = "";
-    this.pickRandomCell(this.grid, this.gridWrap);
-
-    this.grid.forEach((cell) => {
-      if (cell.value !== 0) {
-        this.createCellHTML(cell);
-      }
-    });
-  }
-
   listeners() {
     document.body.addEventListener("keydown", (e) => {
       if (
@@ -119,48 +108,86 @@ class Grid {
       }
 
       const { rows, cols } = groupCells(this.grid, this.gridSize);
+      let newGrid;
 
       switch (e.key) {
         case "ArrowUp":
-          this.grid = this.canMove(this.grid, this.moveCells("up", cols));
+          newGrid = this.moveCells("up", cols);
           break;
         case "ArrowDown":
-          this.grid = this.canMove(this.grid, this.moveCells("down", cols));
+          newGrid = this.moveCells("down", cols);
           break;
         case "ArrowLeft":
-          this.grid = this.canMove(this.grid, this.moveCells("left", rows));
+          newGrid = this.moveCells("left", rows);
           break;
         case "ArrowRight":
-          this.grid = this.canMove(this.grid, this.moveCells("right", rows));
+          newGrid = this.moveCells("right", rows);
           break;
         default:
           break;
       }
+
+      this.grid = this.canMove(this.grid, newGrid);
     });
   }
 
   canMove(oldGrid, newGrid) {
     if (sameGrid(oldGrid, newGrid)) {
+      this.grid = oldGrid;
+      this.renderNewGrid();
       return this.grid;
     } else {
       this.grid = newGrid;
       this.renderNewGrid();
+      this.pickRandomCell(this.grid, this.gridWrap);
       return this.grid;
     }
   }
 
+  renderNewGrid() {
+    this.gridWrap.innerHTML = "";
+
+    this.grid.forEach((cell) => {
+      if (cell.value !== 0) {
+        this.createCellHTML(cell);
+      }
+    });
+  }
+
   createCellHTML(cell) {
     const { row, col, value } = cell;
+
     this.gridWrap.appendChild(
       createHTMLElement("div", {
         className: "cell",
-        style: `--row: ${row}; --col: ${col}; --bg-clr: ${
-          this.colors[cell.value]
-        }`,
+        style: `--row: ${row}; --col: ${col}; --bg-clr: ${this.colors[value]}`,
         textContent: value,
       })
     );
   }
+
+  // Filtering the cells based on a random index but not selecting a random cell directly can lead to an empty array or wrong cell selection.
+
+  // pickRandomCell() {
+  //   const newGrid = [...this.grid];
+
+  //   if (gridIsFilled(newGrid)) {
+  //     return newGrid;
+  //   }
+  //   const randomCell = newGrid.filter(
+  //     (cell) => cell.index === Math.floor(Math.random() * newGrid.length)
+  //   )[0];
+
+  //   if (randomCell?.value === 0) {
+  //     randomCell.value = twoOrFour();
+
+  //     this.createCellHTML(randomCell);
+
+  //     return randomCell;
+  //   } else {
+  //     return this.pickRandomCell(newGrid);
+  //   }
+  // }
 
   pickRandomCell() {
     const newGrid = [...this.grid];
@@ -168,23 +195,34 @@ class Grid {
     if (gridIsFilled(newGrid)) {
       return newGrid;
     }
-    const randomCell = newGrid.filter(
-      (cell) => cell.index === Math.floor(Math.random() * newGrid.length)
-    )[0];
 
-    if (randomCell?.value === 0) {
+    const emptyCells = newGrid.filter((cell) => cell.value === 0);
+    const randomCell =
+      emptyCells[Math.floor(Math.random() * emptyCells.length)];
+
+    if (randomCell) {
       randomCell.value = twoOrFour();
-
       this.createCellHTML(randomCell);
-
       return randomCell;
-    } else {
-      return this.pickRandomCell(newGrid);
     }
   }
 
+  newGame() {
+    const grid = [...this.grid];
+    const isWin = grid.some((cell) => cell.value === 2048);
+
+    if (isWin || gridIsFilled(grid)) {
+      grid.map((cell) => (cell.value = 0));
+    }
+
+    this.init();
+    this.initGridState();
+
+    return this.grid;
+  }
+
   initGridState() {
-    for (let i = 0; i < Math.floor(this.grid.length * 0.5); i++) {
+    for (let i = 0; i < Math.floor(this.gridSize * 0.5); i++) {
       this.pickRandomCell(this.grid, this.gridWrap);
     }
   }
@@ -200,5 +238,5 @@ class Grid {
   }
 }
 
-const classGrid = new Grid({ wrapSelector: ".grid", gridSize: 5 });
-window.grid = classGrid;
+const classGridFour = new Grid({ wrapSelector: ".grid", gridSize: 4 });
+window.grid = classGridFour;
