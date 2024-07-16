@@ -1,46 +1,58 @@
-const slides = document.querySelector(".slides");
-const slideImages = document.querySelectorAll(".slide");
-const leftArrow = document.querySelector(".left-arrow");
-const rightArrow = document.querySelector(".right-arrow");
+export class Slider {
+  constructor() {
+    this.slides = document.querySelector(".slides");
+    this.slideImages = document.querySelectorAll(".slide");
+    this.leftArrow = document.querySelector(".left-arrow");
+    this.rightArrow = document.querySelector(".right-arrow");
+    this.totalSlides = this.slideImages.length;
+    this.currentIndex = 0;
 
-let currentIndex = 0;
-const totalSlides = slideImages.length;
+    this.showSlide(this.currentIndex);
 
-function showSlide(index) {
-  slides.style.transform = `translateX(${-index * 100}%)`;
-  updateArrows();
+    this.leftArrow.addEventListener(
+      "click",
+      this.handleLeftArrowClick.bind(this)
+    );
+    this.rightArrow.addEventListener(
+      "click",
+      this.handleRightArrowClick.bind(this)
+    );
+  }
+
+  showSlide(index) {
+    this.slides.style.transform = `translateX(${-index * 100}%)`;
+    this.updateArrows();
+  }
+
+  updateArrows() {
+    if (this.currentIndex === 0) {
+      this.leftArrow.disabled = true;
+      this.leftArrow.style.cursor = "default";
+    } else {
+      this.leftArrow.disabled = false;
+      this.leftArrow.style.cursor = "pointer";
+    }
+
+    if (this.currentIndex === this.totalSlides - 1) {
+      this.rightArrow.disabled = true;
+      this.rightArrow.style.cursor = "default";
+    } else {
+      this.rightArrow.disabled = false;
+      this.rightArrow.style.cursor = "pointer";
+    }
+  }
+
+  handleLeftArrowClick() {
+    if (this.currentIndex > 0) {
+      this.currentIndex--;
+      this.showSlide(this.currentIndex);
+    }
+  }
+
+  handleRightArrowClick() {
+    if (this.currentIndex < this.totalSlides - 1) {
+      this.currentIndex++;
+      this.showSlide(this.currentIndex);
+    }
+  }
 }
-
-function updateArrows() {
-  if (currentIndex === 0) {
-    leftArrow.disabled = true;
-    leftArrow.style.cursor = "default";
-  } else {
-    leftArrow.disabled = false;
-    leftArrow.style.cursor = "pointer";
-  }
-
-  if (currentIndex === totalSlides - 1) {
-    rightArrow.disabled = true;
-    rightArrow.style.cursor = "default";
-  } else {
-    rightArrow.disabled = false;
-    rightArrow.style.cursor = "pointer";
-  }
-}
-
-leftArrow.addEventListener("click", () => {
-  if (currentIndex > 0) {
-    currentIndex--;
-    showSlide(currentIndex);
-  }
-});
-
-rightArrow.addEventListener("click", () => {
-  if (currentIndex < totalSlides - 1) {
-    currentIndex++;
-    showSlide(currentIndex);
-  }
-});
-
-showSlide(currentIndex);

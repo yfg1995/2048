@@ -1,7 +1,5 @@
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
@@ -11,18 +9,27 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
 
+body {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
   user-select: none;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 *,
 *::before,
 *::after {
   box-sizing: border-box;
+}
+
+.hidden {
+  display: none;
 }
 
 .button {
@@ -32,11 +39,11 @@
   padding: 15px 0;
   font-size: 20px;
   cursor: pointer;
+  font-weight: 600;
 }
 
 /* GRID */
 .grid {
-  /* display: none; */
   --cell-size: 100px;
   --grid-size: 4;
   --gap: 4px;
@@ -48,6 +55,7 @@
   height: calc(var(--grid-size) * var(--cell-size) + var(--gap) * 2);
   border: 2px solid white;
   background: #bbada0;
+  color: black;
 }
 .grid::after {
   position: absolute;
@@ -81,7 +89,7 @@
 }
 
 /* SLIDER */
-.container {
+.homepage {
   position: relative;
   width: 400px;
   height: 400px;
@@ -165,4 +173,25 @@
 .menu-button {
   width: 150px;
   font-size: 18px;
+}
+
+/* GAMEOVER */
+.gameover {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 20;
+  background: black;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+  gap: 20px;
+}
+
+.gameover h1 {
+  font-size: 50px;
 }
