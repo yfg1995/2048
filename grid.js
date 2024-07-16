@@ -28,8 +28,8 @@ export class Grid {
     2048: "#edc850",
   };
 
-  constructor({ wrapSelector, gridSize }) {
-    this.gridWrap = document.querySelector(wrapSelector);
+  constructor({ wrap, gridSize }) {
+    this.gridWrap = wrap;
     this.gridSize = gridSize;
     this.init();
   }

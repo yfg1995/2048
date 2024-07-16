@@ -1,22 +1,14 @@
 export class Slider {
-  constructor() {
+  constructor(parent) {
+    this.parent = parent;
     this.slides = document.querySelector(".slides");
     this.slideImages = document.querySelectorAll(".slide");
     this.leftArrow = document.querySelector(".left-arrow");
     this.rightArrow = document.querySelector(".right-arrow");
     this.totalSlides = this.slideImages.length;
     this.currentIndex = 0;
-
     this.showSlide(this.currentIndex);
-
-    this.leftArrow.addEventListener(
-      "click",
-      this.handleLeftArrowClick.bind(this)
-    );
-    this.rightArrow.addEventListener(
-      "click",
-      this.handleRightArrowClick.bind(this)
-    );
+    this.listeners();
   }
 
   showSlide(index) {
@@ -45,6 +37,7 @@ export class Slider {
   handleLeftArrowClick() {
     if (this.currentIndex > 0) {
       this.currentIndex--;
+      this.parent.gridSize = this.currentIndex + 3;
       this.showSlide(this.currentIndex);
     }
   }
@@ -52,7 +45,19 @@ export class Slider {
   handleRightArrowClick() {
     if (this.currentIndex < this.totalSlides - 1) {
       this.currentIndex++;
+      this.parent.gridSize = this.currentIndex + 3;
       this.showSlide(this.currentIndex);
     }
+  }
+
+  listeners() {
+    this.leftArrow.addEventListener(
+      "click",
+      this.handleLeftArrowClick.bind(this)
+    );
+    this.rightArrow.addEventListener(
+      "click",
+      this.handleRightArrowClick.bind(this)
+    );
   }
 }
