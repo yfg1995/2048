@@ -34,30 +34,36 @@ export class Slider {
     }
   }
 
-  handleLeftArrowClick() {
-    if (this.currentIndex > 0) {
-      this.currentIndex--;
-      this.parent.gridSize = this.currentIndex + 3;
-      this.showSlide(this.currentIndex);
-    }
-  }
+  // handleLeftArrowClick() {
+  //   if (this.currentIndex > 0) {
+  //     this.currentIndex--;
+  //     this.parent.gridSize = this.currentIndex + 3;
+  //     this.showSlide(this.currentIndex);
+  //   }
+  // }
 
-  handleRightArrowClick() {
-    if (this.currentIndex < this.totalSlides - 1) {
-      this.currentIndex++;
-      this.parent.gridSize = this.currentIndex + 3;
-      this.showSlide(this.currentIndex);
-    }
-  }
+  // handleRightArrowClick() {
+  //   if (this.currentIndex < this.totalSlides - 1) {
+  //     this.currentIndex++;
+  //     this.parent.gridSize = this.currentIndex + 3;
+  //     this.showSlide(this.currentIndex);
+  //   }
+  // }
 
   listeners() {
-    this.leftArrow.addEventListener(
-      "click",
-      this.handleLeftArrowClick.bind(this)
-    );
-    this.rightArrow.addEventListener(
-      "click",
-      this.handleRightArrowClick.bind(this)
-    );
+    this.leftArrow.addEventListener("click", () => {
+      if (this.currentIndex < this.totalSlides - 1) {
+        this.currentIndex++;
+        this.parent.gridSize = this.currentIndex + 3;
+        this.showSlide(this.currentIndex);
+      }
+    });
+    this.rightArrow.addEventListener("click", () => {
+      if (this.currentIndex < this.totalSlides - 1) {
+        this.currentIndex++;
+        this.parent.gridSize = this.currentIndex + 3;
+        this.showSlide(this.currentIndex);
+      }
+    });
   }
 }
