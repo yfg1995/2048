@@ -34,26 +34,10 @@ export class Slider {
     }
   }
 
-  // handleLeftArrowClick() {
-  //   if (this.currentIndex > 0) {
-  //     this.currentIndex--;
-  //     this.parent.gridSize = this.currentIndex + 3;
-  //     this.showSlide(this.currentIndex);
-  //   }
-  // }
-
-  // handleRightArrowClick() {
-  //   if (this.currentIndex < this.totalSlides - 1) {
-  //     this.currentIndex++;
-  //     this.parent.gridSize = this.currentIndex + 3;
-  //     this.showSlide(this.currentIndex);
-  //   }
-  // }
-
   listeners() {
     this.leftArrow.addEventListener("click", () => {
-      if (this.currentIndex < this.totalSlides - 1) {
-        this.currentIndex++;
+      if (this.currentIndex > 0) {
+        this.currentIndex--;
         this.parent.gridSize = this.currentIndex + 3;
         this.showSlide(this.currentIndex);
       }
