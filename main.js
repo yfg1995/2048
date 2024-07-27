@@ -1,6 +1,10 @@
 import "./style.css";
-import { GridInit } from "./gridInit";
+import { Homepage } from "./homepage";
 
-const newGrid = new GridInit({
-  wrapSelector: ".grid",
+document.addEventListener("DOMContentLoaded", () => {
+  const homepageWrapper = document.querySelector(".homepage");
+
+  if (homepageWrapper) {
+    new Homepage({ wrapSelector: ".homepage" });
+  }
 });

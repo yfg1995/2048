@@ -28,10 +28,6 @@ body {
   box-sizing: border-box;
 }
 
-.hidden {
-  display: none;
-}
-
 .button {
   width: 200px;
   border: none;
@@ -43,20 +39,31 @@ body {
 }
 
 /* GRID */
+.homepage-grid {
+  --grid-div-size: 300px;
+  --gap: 3px;
+  --cell-size: calc(var(--grid-div-size) / var(--grid-size));
+
+  width: calc(var(--grid-div-size));
+  height: calc(var(--grid-div-size));
+}
 .grid {
   --cell-size: 100px;
-  --grid-size: 4;
   --gap: 4px;
+
+  width: calc(var(--grid-size) * var(--cell-size) + var(--gap) * 2);
+  height: calc(var(--grid-size) * var(--cell-size) + var(--gap) * 2);
+}
+.homepage-grid,
+.grid {
   --cell-bg-clr: #ccc0b3;
   --bdrs: 10px;
 
   position: relative;
-  width: calc(var(--grid-size) * var(--cell-size) + var(--gap) * 2);
-  height: calc(var(--grid-size) * var(--cell-size) + var(--gap) * 2);
   border: 2px solid white;
   background: #bbada0;
-  color: black;
 }
+.homepage-grid::after,
 .grid::after {
   position: absolute;
   content: "";
@@ -64,10 +71,24 @@ body {
   left: var(--gap);
   box-shadow: var(--bg-pattern);
   border-radius: var(--bdrs);
+  background: var(--cell-bg-clr);
   width: calc(var(--cell-size) - var(--gap) * 2);
   height: calc(var(--cell-size) - var(--gap) * 2);
-  background: var(--cell-bg-clr);
 }
+.homepage-grid-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 40px;
+  font-weight: 600;
+  text-align: center;
+  z-index: 20;
+  background: #242424;
+  width: 100%;
+  padding: 10px 0;
+}
+
 .cell {
   position: absolute;
   top: var(--gap);
@@ -91,8 +112,6 @@ body {
 /* SLIDER */
 .homepage {
   position: relative;
-  width: 400px;
-  height: 400px;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -118,23 +137,6 @@ body {
 }
 .slide {
   position: relative;
-}
-.slider span {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 10;
-  background: #bbada0;
-  width: 100%;
-  text-align: center;
-  font-size: 45px;
-  color: black;
-  font-weight: 600;
-}
-.slide img {
-  min-width: 300px;
-  height: 100%;
 }
 .arrow {
   position: absolute;
@@ -169,7 +171,6 @@ body {
   font-weight: 600;
   color: white;
 }
-
 .menu-button {
   width: 150px;
   font-size: 18px;
@@ -191,7 +192,6 @@ body {
   height: 100vh;
   gap: 20px;
 }
-
 .gameover h1 {
   font-size: 50px;
 }
