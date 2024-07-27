@@ -1,5 +1,6 @@
 import { createHTMLElement } from "./helpers";
 import { GridInit } from "./gridInit";
+import { Homepage } from "./homepage";
 
 export class Game {
   constructor({ wrapSelector, slider }) {
@@ -11,37 +12,33 @@ export class Game {
   }
 
   createGameHTML() {
-    const header = createHTMLElement("div", { className: "header" });
-    this.wrap.appendChild(header);
-
-    const score = createHTMLElement("div", {
-      className: "score",
-      textContent: "Score:",
-    });
-    const menuButton = createHTMLElement("button", {
-      className: "button menu-button",
-      textContent: "Back to menu",
-    });
-    header.appendChild(score);
-    header.appendChild(menuButton);
-
-    const grid = createHTMLElement("div", { className: "grid" });
-    this.wrap.appendChild(grid);
-
     this.grid = new GridInit({
       wrapSelector: this.wrapSelector,
       slider: this.slider,
     });
+
+    const header = createHTMLElement("div", { className: "header" });
+
+    const menuButton = createHTMLElement("button", {
+      className: "button menu-button",
+      textContent: "Back to menu",
+    });
+    header.appendChild(menuButton);
+
+    this.wrap.appendChild(header);
   }
 
   listeners() {
     this.menuButton = document.querySelector(".menu-button");
+
     this.menuButton.addEventListener("click", () => {
-      console.log("first");
+      this.wrap.innerHTML = "";
+      new Homepage({ wrapSelector: this.wrapSelector });
     });
   }
 
   init() {
     this.createGameHTML();
+    this.listeners();
   }
 }
